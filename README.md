@@ -1,10 +1,14 @@
 # MISR-GAN
 
+## Model
+
 ## Datasets
 
 ### PROBA-V
 
 ### S2-NAIP
+
+## Results
 
 ## Acknowledgements
 Thanks to these codebases for foundational Super-Resolution code and inspiration:
