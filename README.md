@@ -10,13 +10,17 @@ The proposed model is an adaptation of ESRGAN, with MAMB module and changes that
 ### S2-NAIP
 
 ## Training
-To train a model on this dataset, run the following command, with the desired configuration file:
+To train a model on given dataset, run the following command, with the desired configuration file:
 
-`python -m ssr.train -opt ssr/options/*.yml` 
+`python -m ssr.train -opt ssr/options/*.yml`
 
 There are several sample configuration files in `ssr/options/`. Make sure the configuration file specifies 
 correct paths to your downloaded data, the desired number of low-resolution input images, model parameters, 
 and pretrained weights (if applicable).
+
+Training process step:
+1. Pre-training the model to minimize the pixel loss
+2. GAN training the model with total loss (pixel + perceptual + adversarial)
 
 ## Testing
 To evaluate the model on a test set run the following command, with the desired configuration file:
