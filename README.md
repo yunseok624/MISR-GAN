@@ -36,5 +36,7 @@ Thanks to these codebases for foundational Super-Resolution code and inspiration
 
 [ESRGAN](https://github.com/xinntao/ESRGAN/tree/master)
 
+[Coordinate Attention](https://github.com/houqb/CoordAttention)
+
 ## Contact
 If you have any questions, please email `yunseok.park@skoltech.ru` or [open an issue](https://github.com/yunseok624/MISR-GAN/issues/new).
