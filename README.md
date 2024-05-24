@@ -1,7 +1,7 @@
 # MISR-GAN
 
 ## Model
-The proposed model is an adaptation of ESRGAN, with MAMB module and changes that allows the input to be a stack of multiple LR images
+The proposed model is an adaptation of ESRGAN with CA (Coordinate Attention) module adapted for an input as stack of multiple LR images
 
 ## Datasets
 
