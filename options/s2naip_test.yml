@@ -1,0 +1,75 @@
+# General Settings
+name: s2naip_test
+model_type: SSRESRGANModel
+scale: 4
+num_gpu: auto
+manual_seed: 0
+
+# USM the Ground-Truth
+l1_gt_usm: True
+percep_gt_usm: True
+gan_gt_usm: True
+
+# Dataset and Dataloader Settings
+test_datasets:
+   test:
+     name: test
+     type: S2NAIPDataset
+     
+     phase: test
+     scale: 4
+
+     sentinel2_path: /gpfs/data/gpfs0/park.yunseok/ssr_data/val_set/sentinel2
+     naip_path: /gpfs/data/gpfs0/park.yunseok/ssr_data/val_set/naip
+
+     use_shuffle: False
+
+     n_s2_images: 8
+
+     s2_bands: [tci, b08]
+
+     io_backend:
+       type: disk
+
+# Network Structures
+network_g:
+  type: SSR_RRDBNet_MAMB
+  num_in_ch: 32
+  num_out_ch: 3
+  num_feat: 64
+  num_block: 16
+  num_grow_ch: 32
+
+# Load in existing weights to the generator
+path:
+#   pretrain_network_g: /beegfs/home/park.yunseok/satlas-super-resolution/experiments/net_g_100000.pth.tar
+  param_key_g: params_ema
+  strict_load_g: true
+
+# Testing Settings
+test:
+  save_img: True
+
+  metrics:
+     cpsnr:
+       type: calculate_cpsnr
+       crop_border: 4
+       test_y_channel: false
+     cssim:
+       type: calculate_cssim
+       crop_border: 4
+       test_y_channel: false
+
+# Logging Settings
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 1e3 
+  use_tb_logger: true
+  wandb:
+    project: MISR
+    resume_id: ~
+
+# Dist Training Settings
+dist_params:
+  backend: nccl
+  port: 29500

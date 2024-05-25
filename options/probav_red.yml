@@ -1,0 +1,141 @@
+# General Settings
+name: probav_red
+model_type: SSRESRGANModel
+scale: 3
+num_gpu: auto
+manual_seed: 0
+
+# USM the Ground-Truth
+l1_gt_usm: False
+percep_gt_usm: False
+gan_gt_usm: False
+
+# Dataset and Dataloader Settings
+datasets:
+  train:
+    name: train
+    type: PROBAVDataset
+
+    data_root: /gpfs/data/gpfs0/park.yunseok/split_data/train/RED
+
+    use_shuffle: True
+
+    n_lr_images: 9
+
+    num_worker_per_gpu: 1
+    batch_size_per_gpu: 8
+
+    io_backend:
+      type: disk
+    
+    prefetch_mode: cuda
+    pin_memory: True
+
+  val:
+     name: validation
+     type: PROBAVDataset
+
+     data_root: /gpfs/data/gpfs0/park.yunseok/split_data/val/RED
+
+     use_shuffle: False
+
+     n_lr_images: 9
+
+     io_backend:
+       type: disk
+
+# Network Structures
+network_g:
+  type: SSR_RRDBNet_CA
+  num_in_ch: 9
+  num_out_ch: 1
+  num_feat: 64
+  num_block: 16
+  num_grow_ch: 32
+  scale: 3
+
+network_d:
+  type: Attention_UNetDiscriminatorSN
+#   type: PatchGAN
+  num_in_ch: 1
+  num_feat: 64
+  skip_connection: True
+
+path:
+  pretrain_network_g: /beegfs/home/park.yunseok/satlas-super-resolution/experiments/probav_red_pre/models/net_g_50000.pth
+  param_key_g: params_ema
+  strict_load_g: true
+#   pretrain_network_d:
+  param_key_d: params
+  strict_load_d: true
+  resume_state: ~
+
+# Training Settings
+train:
+  ema_decay: 0.999
+  optim_g:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.999]
+  optim_d:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.999]
+
+#   scheduler:
+#     type: MultiStepLR
+#     milestones: [15000, 30000, 45000]
+#     gamma: 0.5
+
+  total_iter: 50000
+  warmup_iter: -1  # no warm up
+
+  # Losses
+  pixel_opt:
+    type: MS_SSIM_L1
+    loss_weight: !!float 1e-2
+  # Perceptual Loss
+  perceptual_opt:
+    type: LPIPS_Loss
+    loss_weight:  !!float 1e-3
+  # Adversarial Loss
+  gan_opt:
+    type: GANLoss
+    gan_type: vanilla
+    real_label_val: 1.0
+    fake_label_val: 0.0
+    loss_weight: !!float 5e-3
+
+  net_d_iters: 1
+  net_d_init_iters: 0
+
+# Validation Settings
+val:
+   val_freq: !!float 500
+   save_img: False
+
+   metrics:
+     cpsnr:
+       type: calculate_cpsnr
+       crop_border: 4
+       test_y_channel: false
+     cssim:
+       type: calculate_cssim
+       crop_border: 4
+       test_y_channel: false
+
+# Logging Settings
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 5e3
+  use_tb_logger: true
+  wandb:
+    project: MISR
+    resume_id: ~
+
+# Dist Training Settings
+dist_params:
+  backend: nccl
+  port: 29500

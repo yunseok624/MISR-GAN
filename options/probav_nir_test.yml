@@ -1,0 +1,54 @@
+# General Settings
+name: probav_nir_test
+model_type: SSRESRGANModel
+scale: 3
+num_gpu: auto
+manual_seed: 0
+
+# Dataset and Dataloader Settings
+test_datasets:
+  test:
+     name: test
+     type: PROBAVDataset
+
+     phase: test
+     scale: 3
+
+     data_root: /gpfs/data/gpfs0/park.yunseok/probav_data/val/NIR
+
+     use_shuffle: False
+
+     n_lr_images: 9
+
+     io_backend:
+       type: disk
+
+# Network Structures
+network_g:
+  type: SSR_RRDBNet_MAMB
+  num_in_ch: 9
+  num_out_ch: 1
+  num_feat: 64
+  num_block: 16
+  num_grow_ch: 32
+  scale: 3
+
+# Load in existing weights to the generator
+path:
+#   pretrain_network_g:
+  param_key_g: params_ema
+  strict_load_g: true
+
+# Testing Settings
+test:
+  save_img: True
+
+  metrics:
+     cspnr:
+       type: calculate_cpsnr
+       crop_border: 4
+       test_y_channel: false
+     cssim:
+       type: calculate_cssim
+       crop_border: 4
+       test_y_channel: false
