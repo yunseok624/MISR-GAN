@@ -30,7 +30,8 @@ To evaluate the model on a test set run the following command, with the desired 
 ## Results
 
 ## TODO (Future works)
-- [ ] Train on bigger number of iterations 
+- [ ] Train on bigger number of iterations
+- [ ] Run on multiple GPUs for faster computation
 
 ## Acknowledgements
 Thanks to these codebases for foundational Super-Resolution code and inspiration:
