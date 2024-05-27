@@ -31,6 +31,7 @@ To evaluate the model on a test set run the following command, with the desired 
 
 ## TODO (Future works)
 - [ ] Train on bigger number of iterations
+- [ ] Set learning rate scheduler
 - [ ] Run on multiple GPUs for faster computation
 
 ## Acknowledgements
