@@ -32,8 +32,8 @@ To evaluate the model on a test set run the following command, with the desired 
 ## TODO (Future works)
 - [ ] Finish the README.md
 - [ ] Upload the final version of the code
-- [ ] Upload the weights
 - [ ] Train on bigger number of iterations
+- [ ] Upload the weights
 - [ ] Set learning rate scheduler
 - [ ] Run on multiple GPUs for faster computation
 
